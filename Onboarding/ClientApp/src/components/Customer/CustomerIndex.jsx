@@ -87,7 +87,6 @@ export default class CustomerIndex extends Component {
 
   // Semantic UI Form for Customer CURD
   render() {
-    console.log("Customers:render");
     const customers = this.state.customers;
     const openAddModal = this.state.openAddModal;
     const openDeleteModal = this.state.openDeleteModal;
