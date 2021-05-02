@@ -49,7 +49,6 @@ export default class CustomerIndex extends Component {
  // Trigger open and close of Add Customer Model
   addModal = () => {
     this.setState({ openAddModal: !this.state.openAddModal })
-    // console.log("Customers:addModal")
   }
 
   // Trigger open and close of Delete Customer Model
@@ -69,14 +68,12 @@ export default class CustomerIndex extends Component {
  // Passing and setting Customer details needs to be deleted
   setDeleteModal = (customer) => {
     this.setState({ customer: customer })
-   // console.log("Customers:setDeleteModal:Name: " + customer.name + " address: " + customer.address);
     this.deleteModal();
   }
 
  // Passing and setting Customer details needs to be edited
   setEditModal = (customer) => {
     this.setState({ customer: customer })
-   // console.log("Customers:setEditModal:Name: " + customer.name + " address: " + customer.address);
     this.editModal();
   }
 
