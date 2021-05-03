@@ -6,7 +6,7 @@ const DeleteCustomer = (props) => {
   const { open, deleteModal, customer } = props;
 
   const deleteCustomer = (id) => {
-    axios.delete(`https://ReactOnboarding.azurewebsites.net/Customers/DeleteCustomer/${id}`) 
+    axios.delete(`https://onboardingtalent.azurewebsites.net/Customers/DeleteCustomer/${id}`) 
     //axios.delete(`/Customers/DeleteCustomer/${id}`)
       .then(function (res) {
         console.log(res);

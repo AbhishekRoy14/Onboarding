@@ -29,8 +29,8 @@ export default class CustomerIndex extends Component {
   //Fetch the Customer Data
 
   fetchCustomer() {
-    axios.get('https://ReactOnboarding.azurewebsites.net/Customers/GetCustomer') 
-    //axios.get('/Customers/GetCustomer')
+    axios.get('https://onboardingtalent.azurewebsites.net/Customers/GetCustomer') 
+   // axios.get('/Customers/GetCustomer')
       .then((res) => {
         console.log(res.data);
         this.setState({
@@ -69,14 +69,12 @@ export default class CustomerIndex extends Component {
  // Passing and setting Customer details needs to be deleted
   setDeleteModal = (customer) => {
     this.setState({ customer: customer })
-   // console.log("Customers:setDeleteModal:Name: " + customer.name + " address: " + customer.address);
     this.deleteModal();
   }
 
  // Passing and setting Customer details needs to be edited
   setEditModal = (customer) => {
     this.setState({ customer: customer })
-   // console.log("Customers:setEditModal:Name: " + customer.name + " address: " + customer.address);
     this.editModal();
   }
 
@@ -90,7 +88,6 @@ export default class CustomerIndex extends Component {
 
   // Semantic UI Form for Customer CURD
   render() {
-    console.log("Customers:render");
     const customers = this.state.customers;
     const openAddModal = this.state.openAddModal;
     const openDeleteModal = this.state.openDeleteModal;
@@ -124,9 +121,10 @@ export default class CustomerIndex extends Component {
             </Table.Row>
           </Table.Header>
 
+
           <Table.Body>
-            {customers.map((c, index) => {
-              if ((index >= ((currentPage * 5) - 5)) && (index < (currentPage * 5))) {
+          {customers.map((c, index) => {
+              if ((index >= ((currentPage * 5) - 5)) && (index < (currentPage * 5))) {                     
                 return (
                   <Table.Row key={c.id}>
                     <Table.Cell>{c.name}</Table.Cell>
@@ -138,7 +136,7 @@ export default class CustomerIndex extends Component {
                     </Table.Cell>
                   </Table.Row>
                 )
-              }
+                }
             })}
           </Table.Body>
 

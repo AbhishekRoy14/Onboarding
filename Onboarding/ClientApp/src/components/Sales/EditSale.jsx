@@ -36,7 +36,7 @@ const EditSale = (props) => {
     }, [updateDate, updateProduct, updateCustomer, updateStore])
 
     function CustomerList() {
-        axios.get('https://ReactOnboarding.azurewebsites.net/Customers/GetCustomer')
+        axios.get('https://onboardingtalent.azurewebsites.net/Customers/GetCustomer')
        // axios.get('/Customers/GetCustomer')
             .then(res => {
                 console.log(res.data);
@@ -45,7 +45,7 @@ const EditSale = (props) => {
     }
 
     function ProductList() {
-        axios.get('https://ReactOnboarding.azurewebsites.net/Products/GetProduct') 
+        axios.get('https://onboardingtalent.azurewebsites.net/Products/GetProduct') 
        // axios.get('/Products/GetProduct')
             .then(res => {
                 console.log(res.data);
@@ -54,7 +54,7 @@ const EditSale = (props) => {
     }
 
     function StoreList() {
-        axios.get('https://ReactOnboarding.azurewebsites.net/Stores/GetStore') 
+        axios.get('https://onboardingtalent.azurewebsites.net/Stores/GetStore') 
       //  axios.get('/Stores/GetStore')
             .then(res => {
                 console.log(res.data);
@@ -145,7 +145,7 @@ const EditSale = (props) => {
 
         const isValid = validate();
          if (isValid) {
-            axios.put(`https://ReactOnboarding.azurewebsites.net/Sales/PutSales/${saleID}`, sales) 
+            axios.put(`https://onboardingtalent.azurewebsites.net/Sales/PutSales/${saleID}`, sales) 
        //axios.put(`/Sales/PutSales/${saleID}`, sales)
             .then(function (res) {
                 console.log(res);
