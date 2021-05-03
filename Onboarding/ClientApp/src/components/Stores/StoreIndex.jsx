@@ -29,7 +29,7 @@ export default class StoreIndex extends Component {
   //Fetch the Store Data
 
   fetchStore() {
-    axios.get('https://reactonboarding.azurewebsites.net/Stores/GetStore') 
+    axios.get('https://onboardingtalent.azurewebsites.net/Stores/GetStore') 
     //axios.get('/Stores/GetStore')
       .then((res) => {
         console.log(res.data);

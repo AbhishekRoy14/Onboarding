@@ -71,7 +71,7 @@ const EditStore = (props) => {
 
     const isValid = validate();
     if (isValid) {
-      axios.put(`https://ReactOnboarding.azurewebsites.net/Stores/PutStore/${storeID}`, stores) 
+      axios.put(`https://onboardingtalent.azurewebsites.net/Stores/PutStore/${storeID}`, stores) 
    // axios.put(`/Stores/PutStore/${storeID}`, stores)
       .then(function (res) {
         console.log(res);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Header, Image, Modal, Portal, Segment } from 'semantic-ui-react'
+import { Form, Button, Modal} from 'semantic-ui-react'
 import axios from 'axios'
 
 const EditCustomer = (props) => {
@@ -70,7 +70,7 @@ const EditCustomer = (props) => {
     setUpdateAddress(changeAddress ? updateAddress : customer.address);
     const isValid = validate();
     if (isValid) {
-      axios.put(`https://ReactOnboarding.azurewebsites.net/Customers/PutCustomer/${customerID}`, customers) 
+      axios.put(`https://onboardingtalent.azurewebsites.net/Customers/PutCustomer/${customerID}`, customers) 
    // axios.put(`/Customers/PutCustomer/${customerID}`, customers)
       .then(function (res) {
         console.log(res);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Header, Modal } from 'semantic-ui-react'
+import { Form, Button, Modal } from 'semantic-ui-react'
 import axios from 'axios'
 
 const AddNewSale = (props) => {
@@ -23,7 +23,7 @@ const AddNewSale = (props) => {
     }, [date, customer, product, store])
 
     function CustomerList() {
-        axios.get('https://ReactOnboarding.azurewebsites.net/Customers/GetCustomer')
+        axios.get('https://onboardingtalent.azurewebsites.net/Customers/GetCustomer')
         //axios.get('/Customers/GetCustomer')
             .then(res => {
                 console.log(res.data);
@@ -32,7 +32,7 @@ const AddNewSale = (props) => {
     }
 
     function ProductList() {
-        axios.get('https://ReactOnboarding.azurewebsites.net/Products/GetProduct') 
+        axios.get('https://onboardingtalent.azurewebsites.net/Products/GetProduct') 
        // axios.get('/Products/GetProduct')
             .then(res => {
                 console.log(res.data);
@@ -41,7 +41,7 @@ const AddNewSale = (props) => {
     }
 
     function StoreList() {
-        axios.get('https://ReactOnboarding.azurewebsites.net/Stores/GetStore') 
+        axios.get('https://onboardingtalent.azurewebsites.net/Stores/GetStore') 
        // axios.get('/Stores/GetStore')
             .then(res => {
                 console.log(res.data);
@@ -88,7 +88,7 @@ const AddNewSale = (props) => {
     const addSale = () => {
         const isValid = validate();
        if (isValid) {
-        axios.post('https://ReactOnboarding.azurewebsites.net/Sales/PostSales', {
+        axios.post('https://onboardingtalent.azurewebsites.net/Sales/PostSales', {
             //axios.post('/Sales/PostSales', {
                 dateSold: date,
                 customerId: customer,

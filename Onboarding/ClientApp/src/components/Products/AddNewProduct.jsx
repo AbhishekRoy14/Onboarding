@@ -37,7 +37,7 @@ const AddNewProduct = (props) => {
     const addProduct = () => {
         const isValid = validate();
         if (isValid) {
-            axios.post('https://ReactOnboarding.azurewebsites.net/Products/PostProduct', {
+            axios.post('https://onboardingtalent.azurewebsites.net/Products/PostProduct', {
            // axios.post('/Products/PostProduct', {
                 name: name,
                 price: price

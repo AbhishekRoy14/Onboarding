@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Header, Modal } from 'semantic-ui-react'
+import { Form, Button, Modal } from 'semantic-ui-react'
 import axios from 'axios'
 
 const AddNewCustomer = (props) => {
@@ -35,7 +35,7 @@ const AddNewCustomer = (props) => {
     const addCustomer = () => {
         const isValid = validate();
         if (isValid) {
-            axios.post('https://ReactOnboarding.azurewebsites.net/Customers/PostCustomer', {
+            axios.post('https://onboardingtalent.azurewebsites.net/Customers/PostCustomer', {
             //axios.post('/Customers/PostCustomer', {
                 name: name,
                 address: address

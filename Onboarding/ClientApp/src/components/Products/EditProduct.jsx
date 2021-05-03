@@ -71,7 +71,7 @@ const EditProduct = (props) => {
 
     const isValid = validate();
     if (isValid) {
-      axios.put(`https://ReactOnboarding.azurewebsites.net/Products/PutProduct/${productID}`, products) 
+      axios.put(`https://onboardingtalent.azurewebsites.net/Products/PutProduct/${productID}`, products) 
   //  axios.put(`/Products/PutProduct/${productID}`, products)
       .then(function (res) {
         console.log(res);

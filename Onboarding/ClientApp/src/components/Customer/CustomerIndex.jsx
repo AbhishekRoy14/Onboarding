@@ -29,8 +29,8 @@ export default class CustomerIndex extends Component {
   //Fetch the Customer Data
 
   fetchCustomer() {
-    axios.get('https://ReactOnboarding.azurewebsites.net/Customers/GetCustomer') 
-    //axios.get('/Customers/GetCustomer')
+    axios.get('https://onboardingtalent.azurewebsites.net/Customers/GetCustomer') 
+   // axios.get('/Customers/GetCustomer')
       .then((res) => {
         console.log(res.data);
         this.setState({
@@ -120,9 +120,10 @@ export default class CustomerIndex extends Component {
             </Table.Row>
           </Table.Header>
 
+
           <Table.Body>
-            {customers.map((c, index) => {
-              if ((index >= ((currentPage * 5) - 5)) && (index < (currentPage * 5))) {
+          {customers.map((c, index) => {
+              if ((index >= ((currentPage * 5) - 5)) && (index < (currentPage * 5))) {                     
                 return (
                   <Table.Row key={c.id}>
                     <Table.Cell>{c.name}</Table.Cell>
@@ -134,7 +135,7 @@ export default class CustomerIndex extends Component {
                     </Table.Cell>
                   </Table.Row>
                 )
-              }
+                }
             })}
           </Table.Body>
 
