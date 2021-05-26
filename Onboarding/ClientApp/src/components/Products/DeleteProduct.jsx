@@ -6,7 +6,7 @@ const DeleteProduct = (props) => {
   const { open, deleteModal, product, fetchProduct } = props;
 
   const deleteProduct = (id) => {
-    axios.delete(`https://onboardingtalent.azurewebsites.net/Products/DeleteProduct/${id}`)
+    axios.delete(`https://onboardingtalentr.azurewebsites.net/Products/DeleteProduct/${id}`)
       //   axios.delete(`/Products/DeleteProduct/${id}`)
       .then(function (res) {
         console.log(res);

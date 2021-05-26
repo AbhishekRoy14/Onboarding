@@ -30,7 +30,7 @@ export default class ProductIndex extends Component {
 
   //Fetch the Products Data
   fetchProduct() {
-    axios.get('https://onboardingtalent.azurewebsites.net/Products/GetProduct')
+    axios.get('https://onboardingtalentr.azurewebsites.net/Products/GetProduct')
       //axios.get('/Products/GetProduct')
       .then((res) => {
         console.log(res.data);

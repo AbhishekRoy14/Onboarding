@@ -44,7 +44,7 @@ const AddNewStore = (props) => {
     const addStore = () => {
         const isValid = validate();
         if (isValid) {
-            axios.post('https://onboardingtalent.azurewebsites.net/Stores/PostStore', {
+            axios.post('https://onboardingtalentr.azurewebsites.net/Stores/PostStore', {
                 // axios.post('/Stores/PostStore', {
                 name: name,
                 address: address

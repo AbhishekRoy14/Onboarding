@@ -6,7 +6,7 @@ const DeleteStore = (props) => {
   const { open, deleteModal, store, fetchStore } = props;
 
   const deleteStore = (id) => {
-    axios.delete(`https://onboardingtalent.azurewebsites.net/Stores/DeleteStore/${id}`)
+    axios.delete(`https://onboardingtalentr.azurewebsites.net/Stores/DeleteStore/${id}`)
       // axios.delete(`/Stores/DeleteStore/${id}`)
       .then(function (res) {
         console.log(res);

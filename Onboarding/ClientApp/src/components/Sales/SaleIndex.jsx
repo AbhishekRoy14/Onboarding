@@ -32,7 +32,7 @@ export default class SaleIndex extends Component {
   //Fetch the Sale Data
 
   fetchSales() {
-    axios.get('https://onboardingtalent.azurewebsites.net/Sales/GetSales')
+    axios.get('https://onboardingtalentr.azurewebsites.net/Sales/GetSales')
       //axios.get('/Sales/GetSales')
       .then((res) => {
         console.log(res.data);

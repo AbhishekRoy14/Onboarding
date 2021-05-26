@@ -23,7 +23,7 @@ const AddNewSale = (props) => {
     }, [date, customer, product, store])
 
     function CustomerList() {
-        axios.get('https://onboardingtalent.azurewebsites.net/Customers/GetCustomer')
+        axios.get('https://onboardingtalentr.azurewebsites.net/Customers/GetCustomer')
             //axios.get('/Customers/GetCustomer')
             .then(res => {
                 console.log(res.data);
@@ -32,7 +32,7 @@ const AddNewSale = (props) => {
     }
 
     function ProductList() {
-        axios.get('https://onboardingtalent.azurewebsites.net/Products/GetProduct')
+        axios.get('https://onboardingtalentr.azurewebsites.net/Products/GetProduct')
             // axios.get('/Products/GetProduct')
             .then(res => {
                 console.log(res.data);
@@ -41,7 +41,7 @@ const AddNewSale = (props) => {
     }
 
     function StoreList() {
-        axios.get('https://onboardingtalent.azurewebsites.net/Stores/GetStore')
+        axios.get('https://onboardingtalentr.azurewebsites.net/Stores/GetStore')
             // axios.get('/Stores/GetStore')
             .then(res => {
                 console.log(res.data);
@@ -88,7 +88,7 @@ const AddNewSale = (props) => {
     const addSale = () => {
         const isValid = validate();
         if (isValid) {
-            axios.post('https://onboardingtalent.azurewebsites.net/Sales/PostSales', {
+            axios.post('https://onboardingtalentr.azurewebsites.net/Sales/PostSales', {
                 // axios.post('/Sales/PostSales', {
                 dateSold: date,
                 customerId: customer,
