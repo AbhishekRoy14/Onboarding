@@ -3,7 +3,7 @@ import { Form, Button, Modal } from 'semantic-ui-react'
 import axios from 'axios'
 
 const AddNewStore = (props) => {
-    const { open, addModal } = props;
+    const { open, addModal, fetchStore } = props;
     const [name, setname] = useState(null);
     const [address, setaddress] = useState(null);
     const [nameErr, setNameErr] = useState({});
@@ -14,19 +14,27 @@ const AddNewStore = (props) => {
 
     //Form Validation
     function validate() {
+
         let nameErr = {};
         let addressErr = {};
         let isValid = true;
 
         if (!name) {
-            nameErr = "Name is Required";
+            nameErr['name'] = 'Please enter the Store Name.';
             isValid = false;
+        }
+        else if (typeof name !== "undefined") {
+            if (!name.match(/^[a-zA-Z ]*$/)) {
+                nameErr["name"] = "Please enter Alphabet Characters only.";
+                isValid = false;
+            }
         }
 
         if (!address) {
-            addressErr = "Address is Required";
+            addressErr['address'] = 'Please enter the Store Address'
             isValid = false;
         }
+
         setNameErr(nameErr);
         setAddressErr(addressErr);
         return isValid;
@@ -37,12 +45,13 @@ const AddNewStore = (props) => {
         const isValid = validate();
         if (isValid) {
             axios.post('https://onboardingtalent.azurewebsites.net/Stores/PostStore', {
-            //axios.post('/Stores/PostStore', {
+                // axios.post('/Stores/PostStore', {
                 name: name,
                 address: address
             })
                 .then(function (res) {
                     console.log(res);
+                    fetchStore();
                     resetData();
                     addModal();
                 })

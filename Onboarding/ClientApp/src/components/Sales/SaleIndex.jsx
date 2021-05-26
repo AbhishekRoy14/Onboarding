@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Pagination } from 'semantic-ui-react';
+import { Table, Button, Pagination, Segment, Dropdown } from 'semantic-ui-react';
 import AddNewSale from './AddNewSale';
 import EditSale from './EditSale';
 import DeleteSales from './DeleteSales';
+import Footer from '../Footer';
 
 export default class SaleIndex extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-        sales: [],
+      sales: [],
       openAddModal: false,
       openDeleteModal: false,
       openEditModal: false,
       sale: {},
       totalItem: 0,
       currentPage: 1,
-      totalPages: 1
+      totalPages: 1,
+      activeItem: 5
     };
     this.fetchSales = this.fetchSales.bind(this);
   }
@@ -30,8 +32,8 @@ export default class SaleIndex extends Component {
   //Fetch the Sale Data
 
   fetchSales() {
-    axios.get('https://onboardingtalent.azurewebsites.net/Sales/GetSales') 
-    //axios.get('/Sales/GetSales')
+    axios.get('https://onboardingtalent.azurewebsites.net/Sales/GetSales')
+      //axios.get('/Sales/GetSales')
       .then((res) => {
         console.log(res.data);
         this.setState({
@@ -86,6 +88,8 @@ export default class SaleIndex extends Component {
     })
   }
 
+  handleInputChange = (e, { value }) => this.setState({ activeItem: value })
+
   // Semantic UI Form for Sale CURD
   render() {
     const sales = this.state.sales;
@@ -95,21 +99,34 @@ export default class SaleIndex extends Component {
     const sale = this.state.sale;
     const totalItem = this.state.totalItem;
     const currentPage = this.state.currentPage;
+    const { activeItem } = this.state
+
+    const options = [
+      { key: 1, text: '5', value: 5 },
+      { key: 2, text: '10', value: 10 },
+      { key: 3, text: '15', value: 15 },
+      { key: 4, text: '20', value: 20 },
+      { key: 5, text: 'All', value: 100 },
+    ]
+
     return (
       <div>
         <AddNewSale
           open={openAddModal}
-          addModal={() => this.addModal()} />
+          addModal={() => this.addModal()}
+          fetchSales={() => this.fetchSales()} />
 
         <DeleteSales
           open={openDeleteModal}
           deleteModal={() => this.deleteModal()}
+          fetchSales={() => this.fetchSales()}
           sale={sale} />
 
-         <EditSale
+        <EditSale
           open={openEditModal}
           editModal={() => this.editModal()}
-          sale={sale} /> 
+          fetchSales={() => this.fetchSales()}
+          sale={sale} />
         <Button color='blue' content='Create Sale' onClick={this.addModal} />
         <Table celled fixed>
           <Table.Header>
@@ -125,39 +142,45 @@ export default class SaleIndex extends Component {
 
           <Table.Body>
             {sales.map((s, index) => {
-              if ((index >= ((currentPage * 5) - 5)) && (index < (currentPage * 5))) {
+              let value = activeItem
+              if ((index >= ((currentPage * value) - value)) && (index < (currentPage * value))) {
                 return (
-                    <Table.Row key={s.id}>
+                  <Table.Row key={s.id}>
                     <Table.Cell>{s.customer.name}</Table.Cell>
                     <Table.Cell>{s.product.name}</Table.Cell>
                     <Table.Cell>{s.store.name}</Table.Cell>
                     <Table.Cell>{new Date(s.dateSold).toLocaleDateString()}</Table.Cell>
                     <Table.Cell><Button color='yellow' icon='edit' content='Edit' onClick={() => this.setEditModal(s)} /></Table.Cell>
                     <Table.Cell><Button color='red' icon='trash' content='Delete' onClick={() => this.setDeleteModal(s)} /></Table.Cell>
-                </Table.Row>
+                  </Table.Row>
                 )
               }
             })}
           </Table.Body>
 
-          <Table.Footer>
-            <Table.Row>
-              <Table.HeaderCell colSpan="4"></Table.HeaderCell>
-              <Table.HeaderCell colSpan="2">
-                <Pagination
-                  boundaryRange={0}
-                  activePage={currentPage}
-                  ellipsisItem={null}
-                  firstItem={null}
-                  lastItem={null}
-                  siblingRange={1}
-                  totalPages={Math.ceil(totalItem / 5)}
-                  onPageChange={(item, current) => this.pageChange(item, current)}
-                />
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Footer>
         </Table>
+        <div>
+          <Segment floated='left' >
+            <Dropdown
+              button
+              options={options}
+              onChange={this.handleInputChange}
+              type='range'
+              value={activeItem}
+            />
+          </Segment>
+          <Segment floated='right'>
+            <Pagination
+              boundaryRange={1}
+              activePage={currentPage}
+              ellipsisItem={null}
+              firstItem={null}
+              lastItem={null}
+              siblingRange={1}
+              totalPages={Math.ceil(totalItem) / 5}
+              onPageChange={(item, current) => this.pageChange(item, current)}
+            /></Segment></div>
+        <Footer />
       </div>
     );
 

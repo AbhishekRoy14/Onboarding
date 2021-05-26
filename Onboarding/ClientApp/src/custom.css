@@ -15,7 +15,7 @@ code {
 
 .ui.modal{
   width: 600px;
-  height: 500px; 
+  height: 600px; 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -45,4 +45,14 @@ code {
 .ui.ui.modal>.header {
   margin: 10px;
   padding: 10px;
+}
+
+.footer{
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgb(161, 161, 161);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }

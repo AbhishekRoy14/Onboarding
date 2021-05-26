@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Modal} from 'semantic-ui-react'
+import { Form, Button, Modal } from 'semantic-ui-react'
 import axios from 'axios'
 
 const EditCustomer = (props) => {
 
-  const { open, editModal, customer } = props;
+  const { open, editModal, customer, fetchCustomer } = props;
 
   const [changeName, setNameChange] = useState(false)
   const [changeAddress, setChangeAddress] = useState(false)
@@ -22,23 +22,31 @@ const EditCustomer = (props) => {
 
   //Form Validation
   function validate() {
+
     let nameErr = {};
     let addressErr = {};
     let isValid = true;
 
-    if (!updateName) {
-        nameErr = "Name is Required";
+    if (updateName == "") {
+      nameErr['updateName'] = 'Please enter the Customer Name.';
+      isValid = false;
+    }
+    else if (typeof updateName !== "undefined") {
+      if (!updateName.match(/^[a-zA-Z ]*$/)) {
+        nameErr["updateName"] = "Please enter Alphabet Characters only.";
         isValid = false;
+      }
     }
 
-    if (!updateAddress) {
-        addressErr = "Address is Required";
-        isValid = false;
+    if (updateAddress == "") {
+      addressErr['updateAddress'] = 'Please enter the Customer Address'
+      isValid = false;
     }
+
     setNameErr(nameErr);
     setAddressErr(addressErr);
     return isValid;
-}
+  }
 
   // Edit customer name 
   const editName = (e) => {
@@ -70,14 +78,15 @@ const EditCustomer = (props) => {
     setUpdateAddress(changeAddress ? updateAddress : customer.address);
     const isValid = validate();
     if (isValid) {
-      axios.put(`https://onboardingtalent.azurewebsites.net/Customers/PutCustomer/${customerID}`, customers) 
-   // axios.put(`/Customers/PutCustomer/${customerID}`, customers)
-      .then(function (res) {
-        console.log(res);
-        setNameChange(false)
-        setChangeAddress(false)
-        editModal();
-      })
+      axios.put(`https://onboardingtalent.azurewebsites.net/Customers/PutCustomer/${customerID}`, customers)
+        //  axios.put(`/Customers/PutCustomer/${customerID}`, customers)
+        .then(function (res) {
+          console.log(res);
+          setNameChange(false)
+          setChangeAddress(false)
+          editModal();
+          fetchCustomer();
+        })
     }
   }
 
@@ -92,15 +101,15 @@ const EditCustomer = (props) => {
             <input placeholder='Customer Name' name='updateName' type='text' defaultValue={customer.name} onChange={(e) => editName(e)} />
           </Form.Field>
           {Object.keys(nameErr).map((key) => {
-                        return <span style={{ color: "red" }}>{nameErr[key]}</span>
-                    })}
+            return <span style={{ color: "red" }}>{nameErr[key]}</span>
+          })}
           <Form.Field>
             <label>Customer Address</label>
-            <input placeholder='Customer Address' address='updateAddress'type='text' defaultValue={customer.address} onChange={(e) => editAddress(e)} />
+            <input placeholder='Customer Address' address='updateAddress' type='text' defaultValue={customer.address} onChange={(e) => editAddress(e)} />
           </Form.Field>
           {Object.keys(addressErr).map((key) => {
-                        return <span style={{ color: "red" }}>{addressErr[key]}</span>
-                    })}
+            return <span style={{ color: "red" }}>{addressErr[key]}</span>
+          })}
         </Form></Modal.Description>
       <Modal.Actions>
         <Button color='black' onClick={() => cancel()}>

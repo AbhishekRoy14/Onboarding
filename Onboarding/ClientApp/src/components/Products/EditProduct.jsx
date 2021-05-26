@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Modal} from 'semantic-ui-react'
+import { Form, Button, Modal } from 'semantic-ui-react'
 import axios from 'axios'
 
 const EditProduct = (props) => {
 
-  const { open, editModal, product } = props;
+  const { open, editModal, product, fetchProduct } = props;
 
   const [changeName, setNameChange] = useState(false)
   const [changePrice, setChangePrice] = useState(false)
@@ -20,25 +20,32 @@ const EditProduct = (props) => {
     }
   }, [updateName, updatePrice])
 
-//Form Validation
+  //Form Validation
   function validate() {
     let nameErr = {};
     let priceErr = {};
     let isValid = true;
 
-    if (!updateName) {
-        nameErr = "Name is Required";
+    if (updateName == "") {
+      nameErr['updateName'] = 'Please enter the Product Name.';
+      isValid = false;
+    }
+    else if (typeof updateName !== "undefined") {
+      if (!updateName.match(/^[a-zA-Z ]*$/)) {
+        nameErr["updateName"] = "Please enter Alphabet Characters only.";
         isValid = false;
+      }
     }
 
-    if (!updatePrice) {
-      priceErr = "Price is Required";
-        isValid = false;
+    if (updatePrice == "") {
+      priceErr['updatePrice'] = 'Please enter the Product Price'
+      isValid = false;
     }
+
     setNameErr(nameErr);
     setPriceErr(priceErr);
     return isValid;
-}
+  }
 
   // Edit product name 
   const editName = (e) => {
@@ -71,14 +78,15 @@ const EditProduct = (props) => {
 
     const isValid = validate();
     if (isValid) {
-      axios.put(`https://onboardingtalent.azurewebsites.net/Products/PutProduct/${productID}`, products) 
-  //  axios.put(`/Products/PutProduct/${productID}`, products)
-      .then(function (res) {
-        console.log(res);
-        setNameChange(false)
-        setChangePrice(false)
-        editModal();
-      })
+      axios.put(`https://onboardingtalent.azurewebsites.net/Products/PutProduct/${productID}`, products)
+        // axios.put(`/Products/PutProduct/${productID}`, products)
+        .then(function (res) {
+          console.log(res);
+          setNameChange(false)
+          setChangePrice(false)
+          editModal();
+          fetchProduct();
+        })
     }
   }
 
@@ -94,15 +102,15 @@ const EditProduct = (props) => {
             <input placeholder=' Name ' name='updateName' defaultValue={product.name} id="myInput" onChange={(e) => editName(e)} />
           </Form.Field>
           {Object.keys(nameErr).map((key) => {
-                        return <span style={{ color: "red" }}>{nameErr[key]}</span>
-                    })}
+            return <span style={{ color: "red" }}>{nameErr[key]}</span>
+          })}
           <Form.Field>
             <label> Price </label>
-            <input placeholder='Price' name='updatePrice' defaultValue={product.price} onChange={(e) => editPrice(e)} />
+            <input placeholder='Price' name='updatePrice' type='number' defaultValue={product.price} onChange={(e) => editPrice(e)} />
           </Form.Field>
           {Object.keys(priceErr).map((key) => {
-                        return <span style={{ color: "red" }}>{priceErr[key]}</span>
-                    })}
+            return <span style={{ color: "red" }}>{priceErr[key]}</span>
+          })}
         </Form></Modal.Description>
       <Modal.Actions>
         <Button color='black' onClick={() => cancel()}>

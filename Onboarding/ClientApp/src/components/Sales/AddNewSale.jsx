@@ -3,7 +3,7 @@ import { Form, Button, Modal } from 'semantic-ui-react'
 import axios from 'axios'
 
 const AddNewSale = (props) => {
-    const { open, addModal } = props;
+    const { open, addModal, fetchSales } = props;
     const [date, setDate] = useState(null);
     const [customer, setCustomer] = useState(null);
     const [product, setProduct] = useState(null);
@@ -24,7 +24,7 @@ const AddNewSale = (props) => {
 
     function CustomerList() {
         axios.get('https://onboardingtalent.azurewebsites.net/Customers/GetCustomer')
-        //axios.get('/Customers/GetCustomer')
+            //axios.get('/Customers/GetCustomer')
             .then(res => {
                 console.log(res.data);
                 setCusDropList(res.data);
@@ -32,8 +32,8 @@ const AddNewSale = (props) => {
     }
 
     function ProductList() {
-        axios.get('https://onboardingtalent.azurewebsites.net/Products/GetProduct') 
-       // axios.get('/Products/GetProduct')
+        axios.get('https://onboardingtalent.azurewebsites.net/Products/GetProduct')
+            // axios.get('/Products/GetProduct')
             .then(res => {
                 console.log(res.data);
                 setProductDropList(res.data);
@@ -41,8 +41,8 @@ const AddNewSale = (props) => {
     }
 
     function StoreList() {
-        axios.get('https://onboardingtalent.azurewebsites.net/Stores/GetStore') 
-       // axios.get('/Stores/GetStore')
+        axios.get('https://onboardingtalent.azurewebsites.net/Stores/GetStore')
+            // axios.get('/Stores/GetStore')
             .then(res => {
                 console.log(res.data);
                 setStoreDropList(res.data);
@@ -63,17 +63,17 @@ const AddNewSale = (props) => {
             isValid = false;
         }
 
-        if (!customer) {
+        else if (!customer) {
             customerErr = "Please choose customer";
             isValid = false;
         }
-        
-        if (!product) {
+
+        else if (!product) {
             productErr = "Please choose a product";
             isValid = false;
         }
 
-        if (!store) {
+        else if (!store) {
             storeErr = "Please choose a store";
             isValid = false;
         }
@@ -87,9 +87,9 @@ const AddNewSale = (props) => {
     //Add Store function
     const addSale = () => {
         const isValid = validate();
-       if (isValid) {
-        axios.post('https://onboardingtalent.azurewebsites.net/Sales/PostSales', {
-            //axios.post('/Sales/PostSales', {
+        if (isValid) {
+            axios.post('https://onboardingtalent.azurewebsites.net/Sales/PostSales', {
+                // axios.post('/Sales/PostSales', {
                 dateSold: date,
                 customerId: customer,
                 productId: product,
@@ -97,6 +97,7 @@ const AddNewSale = (props) => {
             })
                 .then(function (res) {
                     console.log(res);
+                    fetchSales();
                     resetData();
                     addModal();
                 })
@@ -129,51 +130,51 @@ const AddNewSale = (props) => {
                     <Form.Field>
                         <label>Date Sold</label>
                         <input placeholder='Date Sold'
-                             type='Date'
+                            type='Date'
                             onChange={(e) => setDate(e.target.value)} />
                     </Form.Field>
                     {Object.keys(dateErr).map((key) => {
                         return <span style={{ color: "red" }}>{dateErr[key]}</span>
-                    })} 
+                    })}
                     <hr />
 
                     <Form.Field>
                         <label>Customer</label>
                         <select class="ui dropdown" placeholder='Customer'
                             onChange={(e) => setCustomer(e.target.value)} >
-                                <option value=''></option>
+                            <option value=''></option>
                             {CusDropList.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                         </select>
                     </Form.Field>
-                     {Object.keys(customerErr).map((key) => {
+                    {Object.keys(customerErr).map((key) => {
                         return <span style={{ color: "red" }}>{customerErr[key]}</span>
-                    })} 
+                    })}
                     <hr />
 
                     <Form.Field>
                         <label>Product</label>
-                        <select class="ui dropdown" placeholder='Product' 
+                        <select class="ui dropdown" placeholder='Product'
                             onChange={(e) => setProduct(e.target.value)} >
-                                <option value=''></option>
+                            <option value=''></option>
                             {ProductDropList.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
                         </select>
                     </Form.Field>
-                     {Object.keys(productErr).map((key) => {
+                    {Object.keys(productErr).map((key) => {
                         return <span style={{ color: "red" }}>{productErr[key]}</span>
-                    })} 
+                    })}
                     <hr />
 
                     <Form.Field>
                         <label>Store</label>
-                        <select class="ui dropdown" placeholder='Store' 
+                        <select class="ui dropdown" placeholder='Store'
                             onChange={(e) => setStore(e.target.value)} >
-                                <option value=''></option>
+                            <option value=''></option>
                             {StoreDropList.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
                         </select>
                     </Form.Field>
-                     {Object.keys(storeErr).map((key) => {
+                    {Object.keys(storeErr).map((key) => {
                         return <span style={{ color: "red" }}>{storeErr[key]}</span>
-                    })} 
+                    })}
                     <hr />
 
                 </Form>

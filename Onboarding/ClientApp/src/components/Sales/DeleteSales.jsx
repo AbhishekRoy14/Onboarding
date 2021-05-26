@@ -3,14 +3,15 @@ import { Button, Header, Modal } from 'semantic-ui-react'
 import axios from 'axios'
 
 const DeleteSales = (props) => {
-  const { open, deleteModal, sale } = props;
+  const { open, deleteModal, sale, fetchSales } = props;
 
   const deleteSale = (id) => {
-    axios.delete(`https://onboardingtalent.azurewebsites.net/Sales/DeleteSales/${id}`) 
-    //axios.delete(`/Sales/DeleteSales/${id}`)
+    axios.delete(`https://onboardingtalent.azurewebsites.net/Sales/DeleteSales/${id}`)
+      //axios.delete(`/Sales/DeleteSales/${id}`)
       .then(function (res) {
         console.log(res);
         deleteModal();
+        fetchSales();
       })
   }
 
