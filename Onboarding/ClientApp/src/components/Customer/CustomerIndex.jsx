@@ -31,7 +31,7 @@ export default class CustomerIndex extends Component {
   //Fetch the Customer Data
 
   fetchCustomer() {
-    axios.get('https://onboardingtalent.azurewebsites.net/Customers/GetCustomer')
+    axios.get('https://onboardingtalentr.azurewebsites.net/Customers/GetCustomer')
       // axios.get('/Customers/GetCustomer')
       .then((res) => {
         console.log(res.data);

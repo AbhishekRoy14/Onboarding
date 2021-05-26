@@ -44,7 +44,7 @@ const AddNewCustomer = (props) => {
     const addCustomer = () => {
         const isValid = validate();
         if (isValid) {
-            axios.post('https://onboardingtalent.azurewebsites.net/Customers/PostCustomer', {
+            axios.post('https://onboardingtalentr.azurewebsites.net/Customers/PostCustomer', {
                 //  axios.post('/Customers/PostCustomer', {
                 name: name,
                 address: address

@@ -78,7 +78,7 @@ const EditCustomer = (props) => {
     setUpdateAddress(changeAddress ? updateAddress : customer.address);
     const isValid = validate();
     if (isValid) {
-      axios.put(`https://onboardingtalent.azurewebsites.net/Customers/PutCustomer/${customerID}`, customers)
+      axios.put(`https://onboardingtalentr.azurewebsites.net/Customers/PutCustomer/${customerID}`, customers)
         //  axios.put(`/Customers/PutCustomer/${customerID}`, customers)
         .then(function (res) {
           console.log(res);
