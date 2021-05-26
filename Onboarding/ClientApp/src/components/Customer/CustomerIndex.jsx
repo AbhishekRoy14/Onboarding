@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
-import { Table, Button, Pagination } from 'semantic-ui-react';
+import { Table, Button, Pagination, Segment, Dropdown } from 'semantic-ui-react';
 import AddNewCustomer from './AddNewCustomer';
 import EditCustomer from './EditCustomer';
 import DeleteCustomer from './DeleteCustomer';
+import Footer from '../Footer';
 
 export default class CustomerIndex extends Component {
 
@@ -17,7 +18,8 @@ export default class CustomerIndex extends Component {
       customer: {},
       totalItem: 0,
       currentPage: 1,
-      totalPages: 1
+      totalPages: 1,
+      activeItem: 5
     };
     this.fetchCustomer = this.fetchCustomer.bind(this);
   }
@@ -29,8 +31,8 @@ export default class CustomerIndex extends Component {
   //Fetch the Customer Data
 
   fetchCustomer() {
-    axios.get('https://onboardingtalent.azurewebsites.net/Customers/GetCustomer') 
-   // axios.get('/Customers/GetCustomer')
+    axios.get('https://onboardingtalent.azurewebsites.net/Customers/GetCustomer')
+      // axios.get('/Customers/GetCustomer')
       .then((res) => {
         console.log(res.data);
         this.setState({
@@ -46,7 +48,7 @@ export default class CustomerIndex extends Component {
       })
   }
 
- // Trigger open and close of Add Customer Model
+  // Trigger open and close of Add Customer Model
   addModal = () => {
     this.setState({ openAddModal: !this.state.openAddModal })
   }
@@ -58,20 +60,20 @@ export default class CustomerIndex extends Component {
     })
   }
 
-   // Trigger open and close of Edit Customer Model
-   editModal = () => {
+  // Trigger open and close of Edit Customer Model
+  editModal = () => {
     this.setState({
       openEditModal: !this.state.openEditModal
     })
   }
 
- // Passing and setting Customer details needs to be deleted
+  // Passing and setting Customer details needs to be deleted
   setDeleteModal = (customer) => {
     this.setState({ customer: customer })
     this.deleteModal();
   }
 
- // Passing and setting Customer details needs to be edited
+  // Passing and setting Customer details needs to be edited
   setEditModal = (customer) => {
     this.setState({ customer: customer })
     this.editModal();
@@ -85,6 +87,9 @@ export default class CustomerIndex extends Component {
     })
   }
 
+  handleInputChange = (e, { value }) => this.setState({ activeItem: value })
+
+
   // Semantic UI Form for Customer CURD
   render() {
     const customers = this.state.customers;
@@ -94,20 +99,34 @@ export default class CustomerIndex extends Component {
     const customer = this.state.customer;
     const totalItem = this.state.totalItem;
     const currentPage = this.state.currentPage;
+    const { activeItem } = this.state
+
+    const options = [
+      { key: 1, text: '5', value: 5 },
+      { key: 2, text: '10', value: 10 },
+      { key: 3, text: '15', value: 15 },
+      { key: 4, text: '20', value: 20 },
+      { key: 5, text: 'All', value: 100 },
+    ]
+
     return (
       <div>
+
         <AddNewCustomer
           open={openAddModal}
-          addModal={() => this.addModal()} />
+          addModal={() => this.addModal()}
+          fetchCustomer={() => this.fetchCustomer()} />
 
         <DeleteCustomer
           open={openDeleteModal}
           deleteModal={() => this.deleteModal()}
+          fetchCustomer={() => this.fetchCustomer()}
           customer={customer} />
 
         <EditCustomer
           open={openEditModal}
           editModal={() => this.editModal()}
+          fetchCustomer={() => this.fetchCustomer()}
           customer={customer} />
         <Button color='blue' content='Create Customer' onClick={this.addModal} />
         <Table celled fixed>
@@ -122,8 +141,9 @@ export default class CustomerIndex extends Component {
 
 
           <Table.Body>
-          {customers.map((c, index) => {
-              if ((index >= ((currentPage * 5) - 5)) && (index < (currentPage * 5))) {                     
+            {customers.map((c, index) => {
+              let value = activeItem
+              if ((index >= ((currentPage * value) - value)) && (index < (currentPage * value))) {
                 return (
                   <Table.Row key={c.id}>
                     <Table.Cell>{c.name}</Table.Cell>
@@ -135,30 +155,38 @@ export default class CustomerIndex extends Component {
                     </Table.Cell>
                   </Table.Row>
                 )
-                }
+              }
             })}
-          </Table.Body>
 
-          <Table.Footer>
-            <Table.Row>
-              <Table.HeaderCell colSpan="2"></Table.HeaderCell>
-              <Table.HeaderCell colSpan="2">
-                <Pagination
-                  boundaryRange={0}
-                  activePage={currentPage}
-                  ellipsisItem={null}
-                  firstItem={null}
-                  lastItem={null}
-                  siblingRange={1}
-                  totalPages={Math.ceil(totalItem / 5)}
-                  onPageChange={(item, current) => this.pageChange(item, current)}
-                />
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Footer>
+          </Table.Body>
         </Table>
+
+        <div>
+          <Segment floated='left' >
+            <Dropdown
+              button
+              options={options}
+              onChange={this.handleInputChange}
+              type='range'
+              value={activeItem}
+            />
+          </Segment>
+          <Segment floated='right'>
+            <Pagination
+              boundaryRange={1}
+              activePage={currentPage}
+              ellipsisItem={null}
+              firstItem={null}
+              lastItem={null}
+              siblingRange={1}
+              totalPages={Math.ceil(totalItem) / 5}
+              onPageChange={(item, current) => this.pageChange(item, current)}
+            /></Segment></div>
+        <Footer />
       </div>
+
     );
 
   }
+
 }

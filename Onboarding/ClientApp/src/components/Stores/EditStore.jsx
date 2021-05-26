@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const EditStore = (props) => {
 
-  const { open, editModal, store } = props;
+  const { open, editModal, store, fetchStore } = props;
 
   const [changeName, setNameChange] = useState(false)
   const [changeAddress, setChangeAddress] = useState(false)
@@ -22,23 +22,31 @@ const EditStore = (props) => {
 
   //Form Validation
   function validate() {
+
     let nameErr = {};
     let addressErr = {};
     let isValid = true;
 
-    if (!updateName) {
-        nameErr = "Name is Required";
+    if (updateName == "") {
+      nameErr['updateName'] = 'Please enter the Store Name.';
+      isValid = false;
+    }
+    else if (typeof updateName !== "undefined") {
+      if (!updateName.match(/^[a-zA-Z ]*$/)) {
+        nameErr["updateName"] = "Please enter Alphabet Characters only.";
         isValid = false;
+      }
     }
 
-    if (!updateAddress) {
-        addressErr = "Address is Required";
-        isValid = false;
+    if (updateAddress == "") {
+      addressErr['updateAddress'] = 'Please enter the Store Address'
+      isValid = false;
     }
+
     setNameErr(nameErr);
     setAddressErr(addressErr);
     return isValid;
-}
+  }
 
   // Edit Store name 
   const editName = (e) => {
@@ -71,14 +79,15 @@ const EditStore = (props) => {
 
     const isValid = validate();
     if (isValid) {
-      axios.put(`https://onboardingtalent.azurewebsites.net/Stores/PutStore/${storeID}`, stores) 
-   // axios.put(`/Stores/PutStore/${storeID}`, stores)
-      .then(function (res) {
-        console.log(res);
-        setNameChange(false)
-        setChangeAddress(false)
-        editModal();
-      })
+      axios.put(`https://onboardingtalent.azurewebsites.net/Stores/PutStore/${storeID}`, stores)
+        //axios.put(`/Stores/PutStore/${storeID}`, stores)
+        .then(function (res) {
+          console.log(res);
+          setNameChange(false)
+          setChangeAddress(false)
+          editModal();
+          fetchStore();
+        })
     }
   }
 
@@ -94,15 +103,15 @@ const EditStore = (props) => {
             <input placeholder=' Name' name='updateName' defaultValue={store.name} id="myInput" onChange={(e) => editName(e)} />
           </Form.Field>
           {Object.keys(nameErr).map((key) => {
-                        return <span style={{ color: "red" }}>{nameErr[key]}</span>
-                    })}
+            return <span style={{ color: "red" }}>{nameErr[key]}</span>
+          })}
           <Form.Field>
             <label> Address</label>
             <input placeholder=' Address' name='updateAddress' defaultValue={store.address} onChange={(e) => editAddress(e)} />
           </Form.Field>
           {Object.keys(addressErr).map((key) => {
-                        return <span style={{ color: "red" }}>{addressErr[key]}</span>
-                    })}
+            return <span style={{ color: "red" }}>{addressErr[key]}</span>
+          })}
         </Form></Modal.Description>
       <Modal.Actions>
         <Button color='black' onClick={() => cancel()}>

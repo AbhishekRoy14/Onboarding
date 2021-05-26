@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const EditSale = (props) => {
 
-    const { open, editModal, sale } = props;
+    const { open, editModal, sale, fetchSales } = props;
 
     const [changeDate, setChangeDate] = useState(false)
     const [changeCustomer, setChangeCustomer] = useState(false)
@@ -37,7 +37,7 @@ const EditSale = (props) => {
 
     function CustomerList() {
         axios.get('https://onboardingtalent.azurewebsites.net/Customers/GetCustomer')
-       // axios.get('/Customers/GetCustomer')
+            // axios.get('/Customers/GetCustomer')
             .then(res => {
                 console.log(res.data);
                 setCusDropList(res.data);
@@ -45,8 +45,8 @@ const EditSale = (props) => {
     }
 
     function ProductList() {
-        axios.get('https://onboardingtalent.azurewebsites.net/Products/GetProduct') 
-       // axios.get('/Products/GetProduct')
+        axios.get('https://onboardingtalent.azurewebsites.net/Products/GetProduct')
+            // axios.get('/Products/GetProduct')
             .then(res => {
                 console.log(res.data);
                 setProductDropList(res.data);
@@ -54,8 +54,8 @@ const EditSale = (props) => {
     }
 
     function StoreList() {
-        axios.get('https://onboardingtalent.azurewebsites.net/Stores/GetStore') 
-      //  axios.get('/Stores/GetStore')
+        axios.get('https://onboardingtalent.azurewebsites.net/Stores/GetStore')
+            // axios.get('/Stores/GetStore')
             .then(res => {
                 console.log(res.data);
                 setStoreDropList(res.data);
@@ -70,23 +70,23 @@ const EditSale = (props) => {
         let storeErr = {};
         let isValid = true;
 
-        if (!updateDate) {
+        if (updateDate == "") {
             dateErr = "Please choose a date";
             isValid = false;
         }
 
-        if (!updateCustomer) {
-            customerErr = "Please choose customer";
-            isValid = false;
-        }
-        
-        if (!updateProduct) {
-            productErr = "Please choose a product";
+        else if (updateCustomer == "") {
+            customerErr = "Please choose Customer Name";
             isValid = false;
         }
 
-        if (!updateStore) {
-            storeErr = "Please choose a store";
+        else if (updateProduct == "") {
+            productErr = "Please choose a Product Name";
+            isValid = false;
+        }
+
+        else if (updateStore == "") {
+            storeErr = "Please choose a Store Name";
             isValid = false;
         }
         setDateErr(dateErr);
@@ -144,28 +144,29 @@ const EditSale = (props) => {
         setUpdateDate(changeDate ? updateDate : sale.dateSold);
 
         const isValid = validate();
-         if (isValid) {
-            axios.put(`https://onboardingtalent.azurewebsites.net/Sales/PutSales/${saleID}`, sales) 
-       //axios.put(`/Sales/PutSales/${saleID}`, sales)
-            .then(function (res) {
-                console.log(res);
-                setChangeDate(false)
-                setChangeProduct(false)
-                setChangeCustomer(false)
-                setChangeStore(false)
-                editModal();
-            })
-         }
+        if (isValid) {
+            axios.put(`https://onboardingtalent.azurewebsites.net/Sales/PutSales/${saleID}`, sales)
+                //axios.put(`/Sales/PutSales/${saleID}`, sales)
+                .then(function (res) {
+                    console.log(res);
+                    setChangeDate(false)
+                    setChangeProduct(false)
+                    setChangeCustomer(false)
+                    setChangeStore(false)
+                    editModal();
+                    fetchSales();
+                })
+        }
     }
 
 
     // Semantic UI Form for Editing Sale Details
     return (
-        <Modal open={open} size="small">
+        <Modal open={open} size="small" >
             <Modal.Header>Edit Sale</Modal.Header>
-            <Modal.Description>
+            <Modal.Description >
 
-                <Form>
+                <Form >
 
                     <Form.Field>
                         <label>Date Sold</label>
@@ -175,14 +176,14 @@ const EditSale = (props) => {
                     </Form.Field>
                     {Object.keys(dateErr).map((key) => {
                         return <span style={{ color: "red" }}>{dateErr[key]}</span>
-                    })} 
+                    })}
                     <hr />
 
                     <Form.Field>
                         <label>Customer</label>
                         <select class="ui dropdown" placeholder='Customer' defaultValue={sale.customerId}
                             onChange={(e) => editCustomer(e)} >
-                                <option value=''></option>
+                            <option value=''></option>
                             {CusDropList.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
                         </select>
                     </Form.Field>
@@ -214,7 +215,7 @@ const EditSale = (props) => {
                     </Form.Field>
                     {Object.keys(storeErr).map((key) => {
                         return <span style={{ color: "red" }}>{storeErr[key]}</span>
-                    })} 
+                    })}
                     <hr />
 
                 </Form>

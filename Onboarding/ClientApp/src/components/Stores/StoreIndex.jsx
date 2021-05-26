@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Pagination } from 'semantic-ui-react';
+import { Table, Button, Pagination, Segment, Dropdown } from 'semantic-ui-react';
 import AddNewStore from './AddNewStore';
 import EditStore from './EditStore';
 import DeleteStore from './DeleteStore';
+import Footer from '../Footer';
 
 export default class StoreIndex extends Component {
 
@@ -17,7 +18,8 @@ export default class StoreIndex extends Component {
       store: {},
       totalItem: 0,
       currentPage: 1,
-      totalPages: 1
+      totalPages: 1,
+      activeItem: 5
     };
     this.fetchStore = this.fetchStore.bind(this);
   }
@@ -29,8 +31,8 @@ export default class StoreIndex extends Component {
   //Fetch the Store Data
 
   fetchStore() {
-    axios.get('https://onboardingtalent.azurewebsites.net/Stores/GetStore') 
-    //axios.get('/Stores/GetStore')
+    axios.get('https://onboardingtalent.azurewebsites.net/Stores/GetStore')
+      //axios.get('/Stores/GetStore')
       .then((res) => {
         console.log(res.data);
         this.setState({
@@ -85,6 +87,9 @@ export default class StoreIndex extends Component {
     })
   }
 
+  handleInputChange = (e, { value }) => this.setState({ activeItem: value })
+
+
   // Semantic UI Form for Store CURD
   render() {
     const stores = this.state.stores;
@@ -94,20 +99,33 @@ export default class StoreIndex extends Component {
     const store = this.state.store;
     const totalItem = this.state.totalItem;
     const currentPage = this.state.currentPage;
+    const { activeItem } = this.state
+
+    const options = [
+      { key: 1, text: '5', value: 5 },
+      { key: 2, text: '10', value: 10 },
+      { key: 3, text: '15', value: 15 },
+      { key: 4, text: '20', value: 20 },
+      { key: 5, text: 'All', value: 100 },
+    ]
+
     return (
       <div>
         <AddNewStore
           open={openAddModal}
-          addModal={() => this.addModal()} />
+          addModal={() => this.addModal()}
+          fetchStore={() => this.fetchStore()} />
 
         <DeleteStore
           open={openDeleteModal}
           deleteModal={() => this.deleteModal()}
+          fetchStore={() => this.fetchStore()}
           store={store} />
 
         <EditStore
           open={openEditModal}
           editModal={() => this.editModal()}
+          fetchStore={() => this.fetchStore()}
           store={store} />
         <Button color='blue' content='Create Store' onClick={this.addModal} />
         <Table celled fixed>
@@ -122,7 +140,8 @@ export default class StoreIndex extends Component {
 
           <Table.Body>
             {stores.map((s, index) => {
-              if ((index >= ((currentPage * 5) - 5)) && (index < (currentPage * 5))) {
+              let value = activeItem
+              if ((index >= ((currentPage * value) - value)) && (index < (currentPage * value))) {
                 return (
                   <Table.Row key={s.id}>
                     <Table.Cell>{s.name}</Table.Cell>
@@ -137,25 +156,29 @@ export default class StoreIndex extends Component {
               }
             })}
           </Table.Body>
-
-          <Table.Footer>
-            <Table.Row>
-              <Table.HeaderCell colSpan="2"></Table.HeaderCell>
-              <Table.HeaderCell colSpan="2">
-                <Pagination
-                  boundaryRange={0}
-                  activePage={currentPage}
-                  ellipsisItem={null}
-                  firstItem={null}
-                  lastItem={null}
-                  siblingRange={1}
-                  totalPages={Math.ceil(totalItem / 5)}
-                  onPageChange={(item, current) => this.pageChange(item, current)}
-                />
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Footer>
         </Table>
+        <div>
+          <Segment floated='left' >
+            <Dropdown
+              button
+              options={options}
+              onChange={this.handleInputChange}
+              type='range'
+              value={activeItem}
+            />
+          </Segment>
+          <Segment floated='right'>
+            <Pagination
+              boundaryRange={1}
+              activePage={currentPage}
+              ellipsisItem={null}
+              firstItem={null}
+              lastItem={null}
+              siblingRange={1}
+              totalPages={Math.ceil(totalItem) / 5}
+              onPageChange={(item, current) => this.pageChange(item, current)}
+            /></Segment></div>
+        <Footer />
       </div>
     );
 

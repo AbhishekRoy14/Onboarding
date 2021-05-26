@@ -3,12 +3,12 @@ import { Form, Button, Modal } from 'semantic-ui-react'
 import axios from 'axios'
 
 const AddNewProduct = (props) => {
-    const { open, addModal } = props;
+    const { open, addModal, fetchProduct } = props;
     const [name, setName] = useState(null);
     const [price, setPrice] = useState(null);
     const [nameErr, setNameErr] = useState({});
     const [priceErr, setPriceErr] = useState({});
-    
+
 
     useEffect(() => {
     }, [name, price])
@@ -20,12 +20,18 @@ const AddNewProduct = (props) => {
         let isValid = true;
 
         if (!name) {
-            nameErr = "Name is Required";
+            nameErr['name'] = 'Please enter the Product Name.';
             isValid = false;
+        }
+        else if (typeof name !== "undefined") {
+            if (!name.match(/^[a-zA-Z ]*$/)) {
+                nameErr["name"] = "Please enter Alphabet Characters only.";
+                isValid = false;
+            }
         }
 
         if (!price) {
-            priceErr = "Price is Required";
+            priceErr['price'] = 'Please enter the Product Price'
             isValid = false;
         }
         setNameErr(nameErr);
@@ -38,12 +44,13 @@ const AddNewProduct = (props) => {
         const isValid = validate();
         if (isValid) {
             axios.post('https://onboardingtalent.azurewebsites.net/Products/PostProduct', {
-           // axios.post('/Products/PostProduct', {
+                // axios.post('/Products/PostProduct', {
                 name: name,
                 price: price
             })
                 .then(function (res) {
                     console.log(res);
+                    fetchProduct();
                     resetData();
                     addModal();
                 })
@@ -66,7 +73,7 @@ const AddNewProduct = (props) => {
     // Semantic UI Form for Adding New Product
     return (
         <Modal
-           
+
             open={open} size="small"
         >
             <Modal.Header>Create Product</Modal.Header>

@@ -1,28 +1,29 @@
-import React, {} from 'react'
-import {Button, Header,Modal } from 'semantic-ui-react'
+import React, { } from 'react'
+import { Button, Header, Modal } from 'semantic-ui-react'
 import axios from 'axios'
 
 const DeleteProduct = (props) => {
-  const {open, deleteModal, product } = props;
-  
-const deleteProduct = (id) =>  {
-  axios.delete(`https://onboardingtalent.azurewebsites.net/Products/DeleteProduct/${id}`) 
-       // axios.delete(`/Products/DeleteProduct/${id}`)
-            .then( function(res)  {
-                console.log(res);
-                deleteModal();
-            })
-    }
+  const { open, deleteModal, product, fetchProduct } = props;
+
+  const deleteProduct = (id) => {
+    axios.delete(`https://onboardingtalent.azurewebsites.net/Products/DeleteProduct/${id}`)
+      //   axios.delete(`/Products/DeleteProduct/${id}`)
+      .then(function (res) {
+        console.log(res);
+        deleteModal();
+        fetchProduct();
+      })
+  }
 
 
- // Semantic UI Form for Deleting Product
+  // Semantic UI Form for Deleting Product
   return (
     <Modal open={open} size="tiny">
-        
+
       <Modal.Header>Delete Product</Modal.Header>
-        <Modal.Description>
+      <Modal.Description>
         <Header>Are you sure?</Header>
-        </Modal.Description>
+      </Modal.Description>
       <Modal.Actions>
         <Button color='black' onClick={() => deleteModal()}>
           Cancel

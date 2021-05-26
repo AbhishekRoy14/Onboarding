@@ -3,7 +3,7 @@ import { Form, Button, Modal } from 'semantic-ui-react'
 import axios from 'axios'
 
 const AddNewCustomer = (props) => {
-    const { open, addModal } = props;
+    const { open, addModal, fetchCustomer } = props;
     const [name, setname] = useState(null);
     const [address, setaddress] = useState(null);
     const [nameErr, setNameErr] = useState({});
@@ -12,20 +12,29 @@ const AddNewCustomer = (props) => {
     useEffect(() => {
     }, [name, address])
 
+    //Form Validation
     function validate() {
+
         let nameErr = {};
         let addressErr = {};
         let isValid = true;
 
         if (!name) {
-            nameErr = "Name is Required";
+            nameErr['name'] = 'Please enter the Customer Name.';
             isValid = false;
+        }
+        else if (typeof name !== "undefined") {
+            if (!name.match(/^[a-zA-Z ]*$/)) {
+                nameErr["name"] = "Please enter Alphabet Characters only.";
+                isValid = false;
+            }
         }
 
         if (!address) {
-            addressErr = "Address is Required";
+            addressErr['address'] = 'Please enter the Customer Address'
             isValid = false;
         }
+
         setNameErr(nameErr);
         setAddressErr(addressErr);
         return isValid;
@@ -36,12 +45,13 @@ const AddNewCustomer = (props) => {
         const isValid = validate();
         if (isValid) {
             axios.post('https://onboardingtalent.azurewebsites.net/Customers/PostCustomer', {
-            //axios.post('/Customers/PostCustomer', {
+                //  axios.post('/Customers/PostCustomer', {
                 name: name,
                 address: address
             })
                 .then(function (res) {
                     console.log(res);
+                    fetchCustomer();
                     resetData();
                     addModal();
                 })
@@ -59,12 +69,13 @@ const AddNewCustomer = (props) => {
     const cancel = () => {
         resetData();
         addModal();
+
     }
 
     // Semantic UI Form for Adding New Customer
     return (
         <Modal
-           
+
             open={open} size="small"
         >
             <Modal.Header>Create Customer</Modal.Header>
