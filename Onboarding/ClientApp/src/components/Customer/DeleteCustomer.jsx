@@ -7,7 +7,7 @@ const DeleteCustomer = (props) => {
 
   const deleteCustomer = (id) => {
     axios.delete(`https://onboardingtalentr.azurewebsites.net/Customers/DeleteCustomer/${id}`)
-      //  axios.delete(`/Customers/DeleteCustomer/${id}`)
+      //   axios.delete(`/Customers/DeleteCustomer/${id}`)
       .then(function (res) {
         console.log(res);
         deleteModal();

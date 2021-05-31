@@ -22,7 +22,7 @@ namespace Onboarding.Models
         public DateTime DateSold { get; set; }
 
 
-   
+
         public virtual Customer Customer { get; set; }
         public virtual Product Product { get; set; }
 

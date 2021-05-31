@@ -48,11 +48,16 @@ code {
 }
 
 .footer{
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: rgb(161, 161, 161);
-  position: fixed;
+  background-color: rgb(7, 7, 7);
+  color: white;
+  position:fixed;
+  padding: 20px;
   bottom: 0;
   left: 0;
+  right: 0;
   width: 100%;
+}
+
+#grid-padding {
+  padding-bottom: 100px;
 }
