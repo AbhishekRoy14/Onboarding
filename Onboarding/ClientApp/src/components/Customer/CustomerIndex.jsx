@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Pagination, Segment, Dropdown } from 'semantic-ui-react';
+import { Table, Button, Pagination, Dropdown, Grid } from 'semantic-ui-react';
 import AddNewCustomer from './AddNewCustomer';
 import EditCustomer from './EditCustomer';
 import DeleteCustomer from './DeleteCustomer';
-import Footer from '../Footer';
 
 export default class CustomerIndex extends Component {
 
@@ -32,7 +31,7 @@ export default class CustomerIndex extends Component {
 
   fetchCustomer() {
     axios.get('https://onboardingtalentr.azurewebsites.net/Customers/GetCustomer')
-      // axios.get('/Customers/GetCustomer')
+      //axios.get('/Customers/GetCustomer')
       .then((res) => {
         console.log(res.data);
         this.setState({
@@ -161,8 +160,8 @@ export default class CustomerIndex extends Component {
           </Table.Body>
         </Table>
 
-        <div>
-          <Segment floated='left' >
+        <Grid id="grid-padding">
+          <Grid.Column floated='left' width={5}>
             <Dropdown
               button
               options={options}
@@ -170,8 +169,8 @@ export default class CustomerIndex extends Component {
               type='range'
               value={activeItem}
             />
-          </Segment>
-          <Segment floated='right'>
+          </Grid.Column>
+          <Grid.Column floated='right' width={5}>
             <Pagination
               boundaryRange={1}
               activePage={currentPage}
@@ -179,14 +178,13 @@ export default class CustomerIndex extends Component {
               firstItem={null}
               lastItem={null}
               siblingRange={1}
-              totalPages={Math.ceil(totalItem) / 5}
+              totalPages={Math.ceil(totalItem) / activeItem}
               onPageChange={(item, current) => this.pageChange(item, current)}
-            /></Segment></div>
-        <Footer />
+            />
+          </Grid.Column>
+        </Grid>
       </div>
-
     );
-
   }
 
 }

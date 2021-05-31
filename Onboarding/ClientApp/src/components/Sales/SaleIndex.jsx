@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Table, Button, Pagination, Segment, Dropdown } from 'semantic-ui-react';
+import { Table, Button, Pagination, Grid, Dropdown } from 'semantic-ui-react';
 import AddNewSale from './AddNewSale';
 import EditSale from './EditSale';
 import DeleteSales from './DeleteSales';
-import Footer from '../Footer';
+
 
 export default class SaleIndex extends Component {
 
@@ -157,10 +157,10 @@ export default class SaleIndex extends Component {
               }
             })}
           </Table.Body>
-
         </Table>
-        <div>
-          <Segment floated='left' >
+
+        <Grid id="grid-padding">
+          <Grid.Column floated='left' width={5}>
             <Dropdown
               button
               options={options}
@@ -168,8 +168,8 @@ export default class SaleIndex extends Component {
               type='range'
               value={activeItem}
             />
-          </Segment>
-          <Segment floated='right'>
+          </Grid.Column>
+          <Grid.Column floated='right' width={5}>
             <Pagination
               boundaryRange={1}
               activePage={currentPage}
@@ -177,12 +177,13 @@ export default class SaleIndex extends Component {
               firstItem={null}
               lastItem={null}
               siblingRange={1}
-              totalPages={Math.ceil(totalItem) / 5}
+              totalPages={Math.ceil(totalItem) / activeItem}
               onPageChange={(item, current) => this.pageChange(item, current)}
-            /></Segment></div>
-        <Footer />
+            />
+          </Grid.Column>
+        </Grid>
       </div>
     );
-
   }
+
 }

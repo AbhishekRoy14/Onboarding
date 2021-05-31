@@ -21,7 +21,7 @@ namespace Onboarding.Models
 
         [DisplayName("Name")]
         [Required(ErrorMessage = "Name is required")]
-        [StringLength(100, MinimumLength = 3)]
+        [StringLength(100, MinimumLength = 1)]
         public string Name { get; set; }
 
         [DisplayName("Price")]
